@@ -25,12 +25,11 @@ namespace Project_managment
         public DateTime projectStartDate;
         public DateTime projectEndDate;
         public ProjectStatus projectStatus;
-        public Project(string name, string decription, DateTime startDate, DateTime endDate)
+        public Project(string name, string decription, DateTime startDate)
         {
             projectName = name;
             projectDescription = decription;
             projectStartDate = startDate.Date;
-            projectEndDate = endDate.Date;
             projectStatus = ProjectStatus.Active;
         }
     }
@@ -40,8 +39,7 @@ namespace Project_managment
         public string taskDescription;
         public DateTime taskDeadlineDate;
         public TaskStatus taskStatus;
-        public Project projectParent;
-        public Task(string name, string description, DateTime deadline, Project project)
+        public Task(string name, string description, DateTime deadline)
         {
             taskName = name;
             taskDescription = description;
