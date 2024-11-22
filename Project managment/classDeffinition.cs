@@ -38,12 +38,14 @@ namespace Project_managment
         public string taskName;
         public string taskDescription;
         public DateTime taskDeadlineDate;
+        public TimeSpan taskExpectedTime;
         public TaskStatus taskStatus;
-        public Task(string name, string description, DateTime deadline)
+        public Task(string name, string description, DateTime deadline, TimeSpan expectedTime)
         {
             taskName = name;
             taskDescription = description;
             taskDeadlineDate = deadline;
+            taskExpectedTime = expectedTime;
             taskStatus = TaskStatus.Active;
         }
     }
