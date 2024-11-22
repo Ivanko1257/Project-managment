@@ -289,6 +289,71 @@ public static class Program
                             break;
                     }
                     break;
+                case 7:
+                    Console.Clear();
+                    Console.Write("Upišite ime projekta u kojem je traženi zadatak: ");
+                    Project projectParentToTask = FindProjectByName();
+                    Console.Write("Upišite ime zadatka kojeg želite uređivati: ");
+                    bool taskToEditNameFound = false;
+                    Task taskToEdit = null;
+                    do
+                    {
+                        string nameToFind = Console.ReadLine();
+                        foreach (var task in projects[projectParentToTask])
+                        {
+                            if (task.taskName == nameToFind)
+                            {
+                                taskToEditNameFound = true;
+                                Console.WriteLine(":O");
+                                taskToEdit = task;
+                            }
+                        }
+                        if (!taskToEditNameFound) Console.Write("Ime zadatka ne postoji. Pokušajte ponovo: ");
+                    } while (!taskToEditNameFound);
+                    Console.WriteLine("1 - Prikaz detalja\n2 - Uređivanje statusa\n3 - Izlaz iz izbornika");
+                    int pickedOperationForTask = 0;
+                    do
+                    {
+                        int.TryParse(Console.ReadLine(), out pickedOperationForTask);
+                        if (pickedOperationForTask != 1 && pickedOperationForTask != 2 && pickedOperationForTask != 3)
+                        {
+                            Console.WriteLine("Unos nije validan. Pokušajte ponovo");
+                        }
+                    } while (pickedOperationForTask != 1 && pickedOperationForTask != 2 && pickedOperationForTask != 3);
+                    switch(pickedOperationForTask)
+                    {
+                        case 1:
+                            Console.WriteLine($"\n- Opis: {taskToEdit.taskDescription}\n- Rok za završetak zadatka: {taskToEdit.taskDeadlineDate}\n- Očekivano trajanje zadatka: {taskToEdit.taskExpectedTime}\n- Status zadatka: {taskToEdit.taskStatus}");
+                            LeaveOperation();
+                            break;
+                        case 2:
+                            Console.WriteLine($"\n Trenutni status zadatka je {taskToEdit.taskStatus}. Unesite novi status zadatka(Active, Finished, Delayed): ");
+                            string newTaskStatus = "";
+                            do
+                            {
+                                newTaskStatus = Console.ReadLine();
+                                if (newTaskStatus != "Active" && newTaskStatus != "Delayed" && newTaskStatus != "Finished") Console.WriteLine("Unos nije validan. Pokušajte ponovo");
+                            } while (newTaskStatus != "Active" && newTaskStatus != "Delayed" && newTaskStatus != "Finished");
+                            if (newTaskStatus == "Active") taskToEdit.taskStatus = TaskStatus.Active;
+                            else if (newTaskStatus == "Delayed") taskToEdit.taskStatus = TaskStatus.Delayed;
+                            else taskToEdit.taskStatus = TaskStatus.Finished;
+                            Console.WriteLine("Promjena statusa je uspiješna");
+                            bool allTasksFinished = true;
+                            foreach(var task in projects[projectParentToTask])
+                            {
+                                if(task.taskStatus != TaskStatus.Finished) allTasksFinished = false;
+                            }
+                            if (allTasksFinished)
+                            {
+                                projectParentToTask.projectStatus = ProjectStatus.Finished;
+                                Console.WriteLine($"Svi zadatci u projektu {projectParentToTask.projectName} su završeni te je projektov status isto stavljen pod završen");
+                            }
+                            LeaveOperation();
+                            break;
+                        case 3:
+                            break;
+                    }
+                    break;
             }
         }
     }
